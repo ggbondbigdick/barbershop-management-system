@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.barber.mapper.EvaluateMapper">
+
+    <!--查询评价列表-->
+    <select id="queryEvaluateList" resultType="com.barber.mapping.EvaluateVO">
+        SELECT
+            e.id,
+            e.create_time,
+            e.create_user,
+            u.name AS evaluator,
+            e.update_time,
+            e.type,
+            e.reserve_object,
+            p.name AS project_name,
+            e.content
+        FROM
+            evaluate e
+            LEFT JOIN sys_user u ON e.create_user = u.id
+            LEFT JOIN reserve r ON e.reserve_object = r.id
+            LEFT JOIN haircutting_project p ON r.reserve_object = p.id
+        <where>
+            <if test="evaluateDTO.keyword != null and evaluateDTO.keyword != ''">
+                (u.name LIKE CONCAT('%',#{evaluateDTO.keyword},'%') OR p.name LIKE CONCAT('%',#{evaluateDTO.keyword},'%'))
+            </if>
+        </where>
+        ORDER BY
+            create_time DESC
+    </select>
+</mapper>

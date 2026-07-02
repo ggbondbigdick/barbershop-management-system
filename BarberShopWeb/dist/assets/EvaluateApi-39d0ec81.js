@@ -1,0 +1,1 @@
+import{h as e}from"./http-cab0fc27.js";const l={GetEvaluatePaginationList:a=>e.post("/evaluate/page",a),GetEvaluateInfo:a=>e.get(`/evaluate/info?id=${a}`),AddEvaluate:a=>e.post("/evaluate/add",a),ModifyEvaluate:a=>e.post("/evaluate/modify",a),DeleteEvaluate:a=>e.get(`/evaluate/del?id=${a}`)};export{l as E};

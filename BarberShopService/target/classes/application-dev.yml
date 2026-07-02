@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/barber_shop?useSSL=false&serverTimezone=UTC&useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf8
+    username: root
+    password: 200303
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 30000 # 等待连接池配置连接的最大时长（毫秒），超过这个时长还没连接则会发生SQLException,默认是30000
+      minimum-idle: 5  #最小连接数
+      maximum-pool-size: 20  # 最大连接数
+      auto-commit: true  #自动提交
+      idle-timeout: 600000  # 连接超时的最大时长（毫秒），超时则被释放（retired）,默认：10分钟
+      pool-name: DateSourceHikariCP  #连接池名字
+      max-lifetime: 1800000    # 连接的生命时长（毫秒），超时而且没被使用则被释放（retired）,默认30分钟 1800000ms
+      connection-test-query: SELECT 1
+
+logging:
+  level:
+    root: INFO
+    com.baomidou.mybatisplus: DEBUG
+    org.apache.ibatis: DEBUG
+    org.mybatis.spring.SqlSessionFactoryBean: DEBUG
+
+# 文件预览 url
+file-preview-url: http://127.0.0.1:${server.port}/file/preview/

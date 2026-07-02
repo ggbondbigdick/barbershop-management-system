@@ -1,0 +1,10 @@
+POST http://localhost:8080/attendance/modify
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.2.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2026-03-25T200540.200.json
+
+###
+

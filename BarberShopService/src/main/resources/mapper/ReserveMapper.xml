@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.barber.mapper.ReserveMapper">
+
+    <!--查询预约信息列表-->
+    <select id="queryReserveList" resultType="com.barber.mapping.ReserveVO">
+        SELECT
+            r.id,
+            r.type,
+            hp.id AS related_id,
+            hp.name AS related_name,
+            hp.thumbnail AS related_thumbnail,
+            hp.price AS related_price,
+            u.name AS reserve_person,
+            s.id AS reserve_staff,
+            s.name AS reserve_staff_name,
+            s.avatar AS reserve_staff_avatar,
+            s.good_type AS reserve_staff_good_type,
+            r.reserve_time,
+            r.pay_time,
+            r.evaluate,
+            r.state
+        FROM
+            reserve r
+            LEFT JOIN haircutting_project hp ON r.reserve_object = hp.id
+            LEFT JOIN sys_user u ON r.create_user = u.id
+            LEFT JOIN sys_user s ON r.reserve_staff = s.id
+        <where>
+            r.type = 1
+            <if test="reserveDTO.createUser!= null and reserveDTO.createUser!= ''">
+                AND r.create_user = #{reserveDTO.createUser}
+            </if>
+            <if test="reserveDTO.reserveStaff!= null and reserveDTO.reserveStaff!= ''">
+                AND r.reserve_staff = #{reserveDTO.reserveStaff}
+            </if>
+            <if test="reserveDTO.keyword != null and reserveDTO.keyword != ''">
+                AND (u.name LIKE CONCAT('%', #{reserveDTO.keyword}, '%') OR hp.name LIKE CONCAT('%', #{reserveDTO.keyword}, '%') OR s.name LIKE CONCAT('%', #{reserveDTO.keyword}, '%'))
+            </if>
+        </where>
+    </select>
+
+
+    <!--查询预约信息-->
+    <select id="queryReserveInfo" resultType="com.barber.mapping.ReserveVO">
+        SELECT
+            r.id,
+            r.type,
+            hp.id AS related_id,
+            hp.name AS related_name,
+            hp.thumbnail AS related_thumbnail,
+            hp.introduce AS related_introduce,
+            hp.price AS related_price,
+            r.create_user,
+            u.name AS reserve_person,
+            s.id AS reserve_staff,
+            s.name AS reserve_staff_name,
+            s.avatar AS reserve_staff_avatar,
+            s.good_type AS reserve_staff_good_type,
+            r.reserve_time,
+            r.pay_time,
+            r.state,
+            r.evaluate,
+            r.remark
+        FROM
+            reserve r
+            LEFT JOIN haircutting_project hp ON r.reserve_object = hp.id
+            LEFT JOIN sys_user u ON r.create_user = u.id
+            LEFT JOIN sys_user s ON r.reserve_staff = s.id
+        WHERE
+            r.id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.barber.mapper.AttendanceMapper">
+
+    <!-- 查询所有考勤信息-->
+    <select id="queryAttendanceList" resultType="com.barber.mapping.AttendanceVO">
+        SELECT
+            a.id,
+            u.id AS staff,
+            u.name AS staffName,
+            u.avatar AS staffAvatar,
+            u.create_time AS staffRegisterTime,
+            a.create_time,
+            CASE a.type WHEN '1' THEN '签到' WHEN '2' THEN '请假' END AS type,
+            CASE a.overtime WHEN '1' THEN '是' WHEN '2' THEN '否' END AS overtime
+        FROM
+            attendance a
+            LEFT JOIN sys_user u ON a.staff = u.id
+        <where>
+            <if test="(attendanceDTO.startMonth == null and attendanceDTO.startMonth == '') and (attendanceDTO.endMonth == null and attendanceDTO.endMonth == '')">
+                a.create_time &gt;= DATE_FORMAT(NOW(), '%Y-%m-01') AND a.create_time &lt; DATE_ADD(DATE_FORMAT(NOW(), '%Y-%m-01'), INTERVAL 1 MONTH)
+            </if>
+            <if test="attendanceDTO.type != null and attendanceDTO.type != ''">
+                AND a.type = #{attendanceDTO.type}
+            </if>
+            <if test="attendanceDTO.staffName != null and attendanceDTO.staffName != ''">
+                AND u.name LIKE CONCAT('%', #{attendanceDTO.staffName}, '%')
+            </if>
+            <if test="attendanceDTO.overtime != null and attendanceDTO.overtime != ''">
+                AND a.overtime = #{attendanceDTO.overtime}
+            </if>
+            <if test="attendanceDTO.staff != null and attendanceDTO.staff != ''">
+                AND a.staff = #{attendanceDTO.staff}
+            </if>
+            <if test="(attendanceDTO.startMonth != null and attendanceDTO.startMonth != '') and (attendanceDTO.endMonth != null and attendanceDTO.endMonth != '')">
+                AND DATE_FORMAT(a.create_time, '%Y-%m') &gt;= #{attendanceDTO.startMonth} AND DATE_FORMAT(a.create_time, '%Y-%m') &lt;= #{attendanceDTO.endMonth}
+            </if>
+        </where>
+        ORDER BY
+            a.create_time DESC
+    </select>
+
+    <select id="queryAttendanceInfo" resultType="com.barber.mapping.AttendanceVO">
+        SELECT
+            a.id,
+            u.id AS staff,
+            u.name AS staffName,
+            u.avatar AS staffAvatar,
+            u.create_time AS staffRegisterTime,
+            a.create_time,
+            a.update_time,
+            CASE a.type WHEN '1' THEN '签到' WHEN '2' THEN '请假' END AS type,
+            CASE a.overtime WHEN '1' THEN '是' WHEN '2' THEN '否' END AS overtime,
+            a.remark
+        FROM
+            sys_user u
+            LEFT JOIN attendance a ON u.id = a.staff
+        WHERE
+            a.id = #{id}
+    </select>
+</mapper>

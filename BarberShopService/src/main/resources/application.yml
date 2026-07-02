@@ -1,0 +1,42 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    active: dev
+  jackson:
+    default-property-inclusion: non_empty
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+#    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: Authorization
+  # token有效期，单位s, -1代表永不过期
+  timeout: 21600
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: false
+  # token风格
+  token-style: random-128
+  # 是否输出操作日志
+  is-log: false
+  # 是否从cookie中读取tokent
+  is-read-cookie: false
+  # 是否从 head 中读取 token
+  is-read-header: true
+# 分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countsql
+# RSA 密钥
+rsa:
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzz/fF+zvqbMKFzovQH0J8963ecF6AZc8wyQ/N+t63wzyV8LTez7GBHPit0+A6pCAHcHUMNNRTLGSVbtf9fZuh1mkfZzrmxOvsPueHvs1U7gwBioFIxtsLzDMQKEltt71F9Gc5OeLn5PZzZ1ykAaMFyRBWEuaAu6VB3NYpTzrnfLs+SXE49byp63aFcldJaKxdkmATyqHo6W0up/+Pr7GSekrs5P3535/nMFk7T9jOXIJbn6p9OYede/2YLI33mdrBmh0TbJO+c1nAPDwOASXATb31dTVdgOb88c1c510dB5xulncXLnYTDAaxXzTwWH+lkLpv1k2EbrbOLzJE/6cIQIDAQAB
+  privateKey: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDPP98X7O+pswoXOi9AfQnz3rd5wXoBlzzDJD8363rfDPJXwtN7PsYEc+K3T4DqkIAdwdQw01FMsZJVu1/19m6HWaR9nOubE6+w+54e+zVTuDAGKgUjG2wvMMxAoSW23vUX0Zzk54ufk9nNnXKQBowXJEFYS5oC7pUHc1ilPOud8uz5JcTj1vKnrdoVyV0lorF2SYBPKoejpbS6n/4+vsZJ6Suzk/fnfn+cwWTtP2M5cglufqn05h517/ZgsjfeZ2sGaHRNsk75zWcA8PA4BJcBNvfV1NV2A5vzxzVznXR0HnG6WdxcudhMMBrFfNPBYf6WQum/WTYRuts4vMkT/pwhAgMBAAECggEAa930gYFiY9K5x8kS2t+5lGIw4IAgvj828uIkvTgkpX8Ziy/t3lGXwq2GLJ6GnI9E/zfo9tilkeNCJLj3gw8WDABOKsrHndkrMlRjwgBBiydsZ2jrb5BQSGd/h4vYE0wMCK+il0kkVJQhYnE2NVwTAeBu2kPPDwOaMVyJoMcKYxQi1WQMhnGinRfp62/OW7z43c8U96W90UgM4YP8PmN1bKvaQDbAJQ2fsxo9AeCXd+PCstkk+xqZBqjKdXHjrlr1A98hgOdv0q0XtSKfeq3IEDGKHxw3ksTbfUKJ4VOWmMMZGP2V4MIzil5qyrNa/QROvnNtB8FHaj4Q4STaPQhV+QKBgQDxaT0NPMG0tI6SE3MhgSMlKzq0kMI7inxDDdkRYH02Bxdz4pPIwJ+zKC349V120YYl+249JTNw5EAsWaWHDM2Yw/brpRVIMnKiW8TUb+ZoVnNxFLyY0X5byk1CQ44a3kZYIjXc9tpXoIuz1I6iuXRiTyCK1ky5Uw8OJW89tx2bRwKBgQDbxiJuttABuRqD8zGMqAfaBoV2D0rZ5H3rqqOboT3bfdChYCVkVayNvK+FJ5aP1YRjaEm4cjebn1UWumtpeSAnIufk+LN585zqXUFy0QJwESMBGRjoP2DNxJeaBx2vcP8Jo0ISWnMcfNsEB7cEIeqM13Tmq1batm8yPEhuNrfxVwKBgF2iDs7ykMMRAPdBWfdVyhbhhHyCZQOI/BdZ6KZnwUjSSVNmPyGvLIHlhKc6K80pCRn0Qlau9hvEO+u3vY769UdaQow1VGLTRkkYxOgMmtY/KbljbJ7tKlBZz8tyvkxHiAspAbE5gYhZObY/LC+LNMvomtuesNV0lLNM66+JNY+DAoGACF+fNjqu6DHmSbq9W4+XZP40nY/tmSm0hoMk4qwdEDzV8yAXrJ/7CBd1VIxylx5agfMaQ/XOGpbShiAqMYWU7QjObxHuvKnEg8Vz1e0Su7RbchJDua2YgZ6I7CxzPBkBDpvyy4I4upAjRB8LIRQtvJoE8Tj8AS9MQ0y6scBR99cCgYBON6Y9CQQnXSuVX4oqqw6opTdmwJ8PYUQSPxuE+GNyTnB/2c2weWBnKpwpEfP6yl1Z+MpaK+7bUdVyScjZKj/wtCqA80+GS8pqOLxho8BhtRORNwtb0Or2ZfP5soQGBEvcurEG2WuXgXkWwOL0lxsOic/StcopU9sxTBm4+eSqBg==
